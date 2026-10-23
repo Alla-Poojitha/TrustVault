@@ -1,82 +1,77 @@
 # TrustVault — AI Prompt Log
 
-This file records AI assistance used during TrustVault development. The entries below should reflect actual prompts and work performed. Commit links must be added after the corresponding changes have been committed to the public GitHub repository.
+## Purpose
 
-## Prompt 1 — Flask Application Setup
+This file documents AI assistance used during the development and documentation of TrustVault, a Python and Flask document-sharing prototype.
 
-**Date:** 2026-10-22
+The project repository is:
 
-**Purpose:** Create the initial Flask application structure and configure the database.
+https://github.com/Alla-Poojitha/TrustVault
 
-**Prompt used:** "Help me build the TrustVault secure document-sharing project from scratch using Python and Flask. Guide me step by step and prepare the required source code and documentation."
+## Development Areas
 
-**Outcome:** Created the initial application structure and database models.
+### 1. Flask Application Setup
 
-**Related commit:** TODO — add the actual Git commit URL.
+**Purpose:** Build the initial Flask application structure and configure the database.
 
-## Prompt 2 — Authentication
+**AI assistance:** Guidance on structuring the application, defining database models, and organizing the project files.
 
-**Date:** 2026-10-22
+**Verification:** The initial repository commit (`8a9bae0`) contains the application source, models, templates, and project documentation.
 
-**Purpose:** Implement user registration and login.
+### 2. Authentication
 
-**Prompt used:** "Help me implement user registration and login in Flask using securely hashed passwords and session-based authentication."
+**Purpose:** Support user registration and login.
 
-**Outcome:** Implemented registration, password hashing, login, and session handling.
+**AI assistance:** Guidance on password hashing, session-based authentication, and protecting application routes.
 
-**Related commit:** TODO — add the actual Git commit URL.
+**Verification:** Review `app.py` and the authentication-related templates to confirm the implemented behavior.
 
-## Prompt 3 — Document Access Control
-
-**Date:** 2026-10-23
+### 3. Document Access Control
 
 **Purpose:** Restrict document access to authorized users.
 
-**Prompt used:** "Help me implement document upload and download in Flask, ensuring that users can access only their own documents and that uploaded files are stored privately."
+**AI assistance:** Guidance on document upload, download, private file storage, and ownership checks.
 
-**Outcome:** Implemented document upload, private file storage, and basic owner checks for document access.
+**Verification:** Review the relevant routes in `app.py` and test access-control behavior.
 
-**Related commit:** TODO — add the actual Git commit URL.
-
-## Prompt 4 — Document Integrity and Audit Logging
-
-**Date:** 2026-10-23
+### 4. Document Integrity and Audit Logging
 
 **Purpose:** Detect unexpected document changes and record document activity.
 
-**Prompt used:** "Help me implement SHA-256 document integrity verification and audit logs for document uploads and downloads in my Flask TrustVault project."
+**AI assistance:** Guidance on SHA-256 integrity checks and upload/download audit records.
 
-**Outcome:** Implemented SHA-256 verification and basic upload/download audit records. The audit-log page was manually checked.
+**Verification:** Review the implementation and test the relevant behavior before claiming complete coverage.
 
-**Related commit:** TODO — add the actual Git commit URL.
+### 5. Administrator-Only Audit Logs
 
-## Prompt 5 — Administrator-Only Audit Logs
+**Purpose:** Restrict audit-log access to authorized administrators.
 
-**Date:** 2026-10-23
+**AI assistance:** Guidance on role-based access checks and testing unauthorized requests.
 
-**Purpose:** Restrict audit-log access to administrators.
+**Verification:** The project threat model records the expected access-control behavior. Additional automated security tests are still needed.
 
-**Prompt used:** "Help me restrict the TrustVault audit-log page to administrators and test that normal users receive a 403 response."
+### 6. Security Documentation
 
-**Outcome:** Implemented an administrator role check and manually verified that a normal user was denied access to the audit-log page.
+**Purpose:** Identify security risks, potential impacts, mitigations, and remaining limitations.
 
-**Related commit:** TODO — add the actual Git commit URL.
+**AI assistance:** Guidance on organizing the threat model and documenting security improvements.
 
-## Prompt 6 — Security Documentation
+**Verification:** See `THREATS.md`.
 
-**Date:** 2026-10-23
+## Git History
 
-**Purpose:** Document security risks and mitigations.
+The initial commit is:
 
-**Prompt used:** "Help me create a threat model for TrustVault that identifies security risks, their impact, implemented mitigations, and outstanding security work."
+`8a9bae0` — Initial TrustVault secure document sharing prototype
 
-**Outcome:** Created the initial threat-model documentation in THREATS.md.
+The repository also contains later commits for environment-secret configuration, temporary repository maintenance, and README documentation updates. These commits should not be represented as separate feature-development commits unless the relevant changes are verified.
 
-**Related commit:** TODO — add the actual Git commit URL.
+## Limitations
 
-## Notes
+This log summarizes the AI-assisted development areas. It does not claim that every prompt corresponds to a separate Git commit or that all proposed security controls have been implemented.
 
-- These entries are a draft based on the development work described in the project conversation. Review the dates, wording, and outcomes so they accurately represent your work.
-- Replace every TODO with a real commit URL after committing the corresponding changes.
-- Do not invent commit hashes, repository URLs, or claim that unimplemented security controls are complete.
-- Continue updating this file when additional AI-assisted development work is performed.
+TrustVault remains a development prototype. Review the application code, automated tests, and `THREATS.md` before making security claims.
+
+## Ongoing Updates
+
+Continue updating this file when additional AI-assisted development work is performed. Record only work that actually occurred and use verified commit references where available.

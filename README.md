@@ -2,37 +2,39 @@
 
 ## 1. Project Overview
 
-TrustVault is a web application developed using Python and Flask to support secure document sharing. It allows registered users to upload and download their own documents while recording document activity in an audit log.
+TrustVault is a web application built using Python and Flask to support secure document sharing. It allows registered users to upload and download their own documents while maintaining an audit trail of document activities.
 
 The project focuses on authentication, access control, document integrity, and accountability.
 
 ## 2. Problem Statement
 
-Organizations frequently share confidential documents such as contracts, employee records, and business reports. Unauthorized access, document tampering, and a lack of activity records can create security risks.
+Organizations frequently share confidential documents such as contracts, employee records, and business reports. Unauthorized access, document tampering, and a lack of activity records can create serious security risks.
 
 TrustVault aims to address these challenges through user authentication, document access restrictions, SHA-256 integrity verification, and audit logging.
 
 ## 3. Features
 
 - User registration and login
-- Password hashing
+- Password hashing using Werkzeug
 - Document upload and download
 - Private local file storage
 - SHA-256 document integrity verification
-- Users can access their own documents
+- User-specific document access restrictions
 - Audit records for document uploads and downloads
 - Administrator-only audit log access
 - Maximum upload size of 5 MB
+- SQLite database for application data
 
 ## 4. Technologies Used
 
-- Python
+- Python 3.11
 - Flask
 - Flask-SQLAlchemy
 - SQLite
 - HTML
 - Werkzeug password hashing
-- SHA-256
+- SHA-256 hashing
+- Pytest for automated testing
 
 ## 5. Project Structure
 
@@ -50,7 +52,7 @@ TrustVault/
     └── private_uploads/
 ```
 
-Note: Some documentation and test files in this structure are planned and must be created before submission. Local database files and private uploads should not be published.
+**Note:** The `instance/` directory may be created locally when the application runs. Local database files and uploaded documents contain application data and should not be committed to the public repository.
 
 ## 6. Installation and Setup
 
@@ -58,20 +60,19 @@ Note: Some documentation and test files in this structure are planned and must b
 
 - Python 3.11 or a compatible Python version
 - pip
+- Git
 - Visual Studio Code or another code editor
 
 ### Step 1: Clone the Repository
 
 ```bash
-git clone YOUR_GITHUB_REPOSITORY_URL
+git clone https://github.com/Alla-Poojitha/TrustVault.git
 cd TrustVault
 ```
 
-Replace the placeholder with the actual repository URL.
-
 ### Step 2: Create a Virtual Environment
 
-On Windows:
+On Windows PowerShell:
 
 ```powershell
 python -m venv .venv
@@ -81,71 +82,125 @@ python -m venv .venv
 ### Step 3: Install Dependencies
 
 ```powershell
-pip install -r requirements.txt
+python -m pip install -r requirements.txt
 ```
 
 ### Step 4: Configure the Secret Key
 
-Set a strong, randomly generated `SECRET_KEY` environment variable. Never publish real secret keys in the repository.
+The application requires a `SECRET_KEY` environment variable. Generate a strong, random secret key and configure it in your local environment.
 
-### Step 5: Start the Application
+For Windows PowerShell, you can generate a key with Python:
+
+```powershell
+python -c "import secrets; print(secrets.token_hex(32))"
+```
+
+Copy the generated value locally and set it for your current PowerShell session:
+
+```powershell
+$env:SECRET_KEY = "paste-your-generated-secret-here"
+```
+
+Replace the example text with your generated key. Never commit your real secret key to GitHub or share it publicly.
+
+### Step 5: Run the Application
 
 ```powershell
 python app.py
 ```
 
-Open the following address in your browser:
+Open the application in your browser:
 
 http://127.0.0.1:5000/
 
+This address is for local development on your computer. It is not a public deployment URL.
+
 ## 7. How to Test the Application
 
-1. Register a test user.
-2. Log in with the registered account.
-3. Upload a small test document.
-4. Open My Documents.
-5. Download the uploaded document and verify that the integrity check succeeds.
-6. Attempt to access `/admin/audit-logs` as a normal user. The expected result is HTTP 403.
-7. Log in as an administrator and verify that upload and download audit records are displayed.
+Follow these steps to perform a basic manual test:
 
-## 8. Security Features
+1. Start the Flask application.
+2. Register a test user.
+3. Log in using the registered account.
+4. Upload a small test document.
+5. Open the document list and confirm that the uploaded document appears.
+6. Download the document and check whether the integrity verification succeeds.
+7. Attempt to access `/admin/audit-logs` as a normal user. The expected result is HTTP 403 if the route and authorization check are configured as described.
+8. Using an appropriately configured administrator account, check whether upload and download audit records are displayed.
+
+Use only test documents and test accounts during development.
+
+## 8. Automated Tests
+
+The project includes a `tests/` directory for automated tests.
+
+Install the project dependencies, activate the virtual environment, configure `SECRET_KEY`, and run:
+
+```powershell
+python -m pytest -q
+```
+
+Review the test output to confirm which tests pass or fail. Passing tests provide evidence only for the cases they cover; they do not establish that the application is completely secure.
+
+## 9. Security Features
 
 ### Authentication
 
-Passwords are hashed using Werkzeug password-hashing utilities instead of being stored as plain text.
+The application supports user registration and login. Passwords are hashed using Werkzeug password-hashing utilities rather than being stored as plain text.
 
 ### Access Control
 
-The application checks the logged-in user before allowing access to protected pages. Administrator audit logs are restricted to accounts with the administrator role.
+Protected functionality checks the logged-in user. Document access is intended to be restricted to the document owner, while administrator audit-log access is restricted by role.
 
 ### Document Integrity
 
-TrustVault calculates a SHA-256 hash when a document is uploaded and compares the hash during download to detect unexpected file changes.
+TrustVault calculates a SHA-256 hash for uploaded documents and compares it during download to detect unexpected changes to stored files.
 
 ### Audit Logging
 
-The application records document upload and download events with user and document references and timestamps.
+The application records document upload and download activity, including relevant user and document references and timestamps.
 
-## 9. Security Limitations
+### Private File Storage
 
-TrustVault is currently a development prototype and is not production-ready.
+Uploaded documents are stored locally rather than being served directly from a public static directory. Access should be provided only through authorized application routes.
 
-Further work is required to implement and verify:
+## 10. Threat Modeling
 
-- CSRF protection
+`THREATS.md` documents relevant security threats, potential impacts, and mitigation approaches for the TrustVault prototype.
+
+The threat model should be reviewed alongside the source code and updated whenever security controls or application behavior change.
+
+## 11. AI Assistance and Development Notes
+
+`PROMPTS.md` records prompts used during development and the related development work.
+
+Any commit references or descriptions should correspond to actual work performed in the repository. AI-assisted code should be reviewed, tested, and understood by the project author.
+
+## 12. Security Limitations and Future Improvements
+
+TrustVault is a development prototype and is **not production-ready**.
+
+Further work is needed to implement and verify:
+
+- CSRF protection for state-changing requests
 - Secure production configuration and session-cookie settings
 - Rate limiting and stronger authentication protections
 - Comprehensive automated security tests
-- Organization-level tenant isolation and secure document sharing between authorized users
-- Production deployment, persistent storage, backups, and monitoring
+- Robust organization-level tenant isolation and authorized document sharing
+- Stronger file validation and upload security controls
+- Production deployment using HTTPS
+- Persistent storage, backups, monitoring, and secure operational practices
 
-The current application uses a local SQLite database and local file storage.
+The current application uses a local SQLite database and local file storage. A local development setup should not be treated as proof of production security.
 
-## 10. Project Status
+## 13. Project Status
 
-The core registration, login, document upload and download, SHA-256 integrity checking, and administrator audit-log features have been implemented and manually tested.
+The project implements core registration, login, document upload and download, SHA-256 integrity checking, and administrator audit-log functionality.
 
-Additional security hardening, automated testing, documentation, and deployment remain part of the project work.
+Automated test coverage, additional security hardening, deployment, and operational safeguards should be evaluated separately. Features and tests should be described as complete only after verifying them in the current repository.
 
-## Author
-Alla Poojitha
+## 14. Author
+
+**Alla Poojitha**
+
+GitHub: https://github.com/Alla-Poojitha/TrustVault

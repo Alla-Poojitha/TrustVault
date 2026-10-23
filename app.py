@@ -26,10 +26,9 @@ from models import db, User, Document, AuditLog
 
 app = Flask(__name__)
 
-app.config["SECRET_KEY"] = os.environ.get(
-    "SECRET_KEY",
-    "dev-only-change-this-secret-key"
-)
+app.config["SECRET_KEY"] = os.environ.get("SECRET_KEY")
+if not app.config["SECRET_KEY"]:
+    raise RuntimeError("Set the SECRET_KEY environment variable before starting TrustVault.")
 app.config["MAX_CONTENT_LENGTH"] = 5 * 1024 * 1024
 app.config["SQLALCHEMY_DATABASE_URI"] = "sqlite:///trustvault.db"
 app.config["SQLALCHEMY_TRACK_MODIFICATIONS"] = False

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>TrustVault - Upload Document</title>
+</head>
+<body>
+    <h1>Upload a Document</h1>
+    <form method="POST" action="/upload" enctype="multipart/form-data">
+        <label for="document">Choose a document:</label>
+        <input
+            type="file"
+            id="document"
+            name="document"
+            required
+        >
+        <br><br>
+        <button type="submit">Upload</button>
+    </form>
+    <p><a href="/dashboard">Back to Dashboard</a></p>
+</body>
+</html>
